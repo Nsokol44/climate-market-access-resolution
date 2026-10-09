@@ -1,0 +1,38 @@
+{
+  "sources": {
+    "spei03_nc": {
+      "path": "spei03.nc (SPEIbase v2.10 SPEI-3, DOI 10.20350/digitalCSIC/16497); set SPEI_NC in code/fetch_data.py",
+      "sha256": "31423f8ddeed2de31e4fb5e1325ded3859bd0cc88157b28a4ab1cb846812441e"
+    },
+    "tract_shp": {
+      "path": "cb_2023_us_tract_500k.shp (Census Bureau cartographic boundary file); set TRACT_SHP in code/fetch_data.py",
+      "sha256": "653b4c7bee44de8ced1ba884b6fd4d701dcd9e0b64147c26b8b7d8deb4580ad0"
+    },
+    "tract_scores_CA": {
+      "path": "tract_scores_CA.csv (tract population table for CA); set TRACT_TMPL in code/fetch_data.py",
+      "sha256": "4154939e42de2128367038c322ea742054d526d8677e13531fe237e614a569ff"
+    },
+    "tract_scores_FL": {
+      "path": "tract_scores_FL.csv (tract population table for FL); set TRACT_TMPL in code/fetch_data.py",
+      "sha256": "b4daba3fcacb5defded0625d35ea133b625eff2bb6d102b504b0494c14071724"
+    },
+    "tract_scores_TX": {
+      "path": "tract_scores_TX.csv (tract population table for TX); set TRACT_TMPL in code/fetch_data.py",
+      "sha256": "f443e605c93fd6104873f7ea70a568dd2ea4f0d6de1a28d901acde6111d2312f"
+    },
+    "tract_scores_IL": {
+      "path": "tract_scores_IL.csv (tract population table for IL); set TRACT_TMPL in code/fetch_data.py",
+      "sha256": "ed8419f12b627a155b521ea4832c267102293ee9206172212e78a35846d9b2dc"
+    }
+  },
+  "outputs": {
+    "cells": 564,
+    "tracts": 24205,
+    "months": 528,
+    "total_population": 103424435.0,
+    "nan_cell_months": 1584,
+    "cells.csv_sha256": "dfa8469d67436fcbe3e94b9b47f82fc1bf09a4a1fec6c576c316a4018799d7b5",
+    "tracts.csv_sha256": "8c952fd9f5490448aac6f864749add192bba703dc2dc8c4ce314227bcb3ffe70",
+    "spei_cells.npz_sha256": "b1b0717b9bc812fa51945a125acfad8b8dfb6eb0786bbc327d9216b658ae6b56"
+  }
+}

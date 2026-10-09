@@ -1,0 +1,16 @@
+check,value,unit,expected
+zero_anomaly,2.6645352591003757e-15,max |loss| (fraction),0
+all_months_mean_loss_vs_static_pct,-26.64314953738368,%,-26.6
+random_weather_mean_loss_vs_static_pct,-26.498085129324565,%,-25.3
+climrel_agg_driest_decile_pct,-4.49812270340132,%,-4.50
+climrel_agg_wettest_decile_pct,-7.527269439036859,%,-7.53
+climrel_percell_absD_popwtd_mean_pct,14.090578645109566,%,14.1
+random_weather_pooled_resample_mean_loss_vs_static_pct,-26.498795016864307,%,-25.3 (different random construction)
+corr_aggD_vs_absSPEI,-0.9873544034511816,r,-0.987
+corr_aggD_vs_signedSPEI,-0.07985824649088727,r,-0.08
+climrel_own_driest_decile_instate_CA_pct,-21.96846000312603,%,-18.6..-22.0
+climrel_own_driest_decile_instate_FL_pct,-20.16064975105069,%,-18.6..-22.0
+climrel_own_driest_decile_instate_TX_pct,-18.604082756256744,%,-18.6..-22.0
+climrel_own_driest_decile_instate_IL_pct,-19.15062862227959,%,-18.6..-22.0
+climrel_case_IL_1988-07_instate_pct,-37.466125674339686,%,-37.5
+climrel_case_IL_1988-07_domain_pct,-2.0478902864951736,%,-2.0

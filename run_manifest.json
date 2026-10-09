@@ -1,0 +1,39 @@
+{
+  "run": "p3_scale_amr_real",
+  "wall_clock_seconds": 547.7956600189209,
+  "expected_outputs": [
+    "results/e0_gate_replication.csv",
+    "results/e1_ladder.csv",
+    "results/e1_coherence_bins.csv",
+    "results/e1_coherence_leafmonths.csv.gz",
+    "results/e2_equal_budget.csv",
+    "results/e4_barnes_hut.csv",
+    "results/fig1_ladder.png",
+    "results/fig1_ladder.pdf",
+    "results/fig2_equal_budget.png",
+    "results/fig2_equal_budget.pdf",
+    "results/fig3_representation.png",
+    "results/fig3_representation.pdf",
+    "results/fig4_barnes_hut.png",
+    "results/fig4_barnes_hut.pdf",
+    "results/fig5_case_anomaly_maps.png",
+    "results/fig5_case_anomaly_maps.pdf"
+  ],
+  "months": [
+    "1980-01",
+    "2023-12"
+  ],
+  "n_months": 528,
+  "n_cells": 564,
+  "total_population": 103424435.0,
+  "n_tracts": 24205,
+  "alpha": 0.5,
+  "beta": 0.5,
+  "d0_km": 100.0,
+  "log": [
+    "E0 done",
+    "E1 done",
+    "E2 done",
+    "E4 done"
+  ]
+}
