@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "climate-market-access-resolution: code and data for 'Zooming in on weather and market access: how much does map resolution matter?'"
+authors:
+  - family-names: "Sokol"
+    given-names: "Nicholas J."
+    affiliation: "Department of Geography & Sustainability, University of Tennessee, Knoxville"
+    orcid: "https://orcid.org/0000-0002-4798-0056"
+license: MIT
+version: "1.0.0"
+date-released: "2026-10-16"

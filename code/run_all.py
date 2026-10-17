@@ -385,39 +385,40 @@ def _save(fig, name):
     plt.close(fig)
 
 def make_figures(e1df, e2df, e4df):
-    plt.rcParams.update({"font.size": 7.5, "axes.titlesize": 8, "axes.labelsize": 7.5,
-                         "legend.fontsize": 7, "figure.dpi": 150, "pdf.fonttype": 42})
+    plt.rcParams.update({"font.size": 9, "axes.titlesize": 10, "axes.labelsize": 9,
+                         "legend.fontsize": 8, "figure.dpi": 150})
     lad = e1df[e1df.experiment == "E1_ladder"]
     # Figure 1
-    fig, ax = plt.subplots(2, 1, figsize=(4.5, 5.2), sharex=True)
+    fig, ax = plt.subplots(1, 2, figsize=(7.2, 2.9))
     for rep, mk in [("field", "o"), ("joint", "s"), ("source", "^")]:
         d = lad[lad.rep == rep]
         ax[0].plot(d.block_deg, d.bias_loss_pp, marker=mk, color=CB[rep], label=rep)
         ax[1].plot(d.block_deg, d.rmse_anom_pp, marker=mk, color=CB[rep], label=rep)
     ax[0].axhline(0, color="#999999", lw=0.8); ax[0].set_xlabel("Block size (°)"); ax[0].set_ylabel("Mean-loss bias (pp)")
-    ax[0].set_title("a)", loc="left", fontweight="bold"); ax[0].legend(frameon=False)
+    ax[0].set_title("a) Bias toward zero grows with coarsening"); ax[0].legend(frameon=False)
     ax[1].set_xlabel("Block size (°)"); ax[1].set_ylabel("Anomaly RMSE (pp)")
-    ax[1].set_title("b)", loc="left", fontweight="bold")
+    ax[1].set_title("b) Cell-level anomaly error grows monotonically")
     for a in ax: a.grid(alpha=0.25, lw=0.5)
     fig.tight_layout(); _save(fig, "fig1_ladder")
     # Figure 2
-    fig, ax = plt.subplots(figsize=(4.5, 3.2))
+    fig, ax = plt.subplots(figsize=(5.2, 3.4))
     for kind, mk, ls in [("uniform", "s", "--"), ("range_static", "x", ":"), ("mass", "^", "-."), ("l1g_static", "o", "-")]:
         d = e2df[(e2df.partition == kind) & (e2df.rep == "field")]
         lab = {"uniform": "uniform", "range_static": "range (static)", "mass": "mass only",
                "l1g_static": "response-error $I_\\ell$"}[kind]
         ax.plot(d.leaves, d.rmse_anom_pp, marker=mk, ls=ls, color=CB[kind], label=lab)
     ax.set_xlabel("Leaves (equal budget)"); ax.set_ylabel("Anomaly RMSE, field averaging (pp)")
+    ax.set_title("Response-error indicator beats uniform and range at every budget")
     ax.legend(frameon=False); ax.grid(alpha=0.25, lw=0.5)
     fig.tight_layout(); _save(fig, "fig2_equal_budget")
     # Figure 3
-    fig, ax = plt.subplots(2, 1, figsize=(4.5, 6.2))
+    fig, ax = plt.subplots(1, 2, figsize=(7.2, 2.9))
     reps = lad[lad.block_deg > 0.5]
     x = np.arange(3); wbar = 0.38
     ax[0].bar(x - wbar/2, reps[reps.rep == "field"].rmse_anom_pp, wbar, color=CB["field"], label="field averaging")
     ax[0].bar(x + wbar/2, reps[reps.rep == "source"].rmse_anom_pp, wbar, color=CB["source"], label="source aggregation")
     ax[0].set_xticks(x, ["1°\n181 leaves", "2°\n63 leaves", "4°\n28 leaves"]); ax[0].set_ylabel("Anomaly RMSE (pp)")
-    ax[0].set_title("a)", loc="left", fontweight="bold"); ax[0].legend(frameon=False)
+    ax[0].set_title("a) Ladder: source aggregation at each rung"); ax[0].legend(frameon=False)
     e2p = e2df.copy(); e2p["ratio"] = np.nan
     for (bud, kind), grp in e2p.groupby(["budget", "partition"]):
         f = grp[grp.rep == "field"].rmse_anom_pp.iloc[0]; s = grp[grp.rep == "source"].rmse_anom_pp.iloc[0]
@@ -425,16 +426,16 @@ def make_figures(e1df, e2df, e4df):
     rat = e2p[e2p.rep == "field"].sort_values(["budget", "partition"])
     ax[1].barh(np.arange(len(rat)), rat.ratio, color="#56B4E9")
     disp = {"uniform": "uniform", "range_static": "range", "mass": "mass", "l1g_static": "response-error"}
-    ax[1].set_yticks(np.arange(len(rat)), [f"{disp[p]}, {b}" for p, b in zip(rat.partition, rat.budget)], fontsize=6.5)
+    ax[1].set_yticks(np.arange(len(rat)), [f"{disp[p]}, {b}" for p, b in zip(rat.partition, rat.budget)], fontsize=7)
     ax[1].axvline(0.2, color="#CC79A7", ls="--", lw=1); ax[1].text(0.21, len(rat) - 0.4, "H3 criterion (0.20)", fontsize=7, color="#CC79A7")
-    ax[1].set_xlabel("Source / field anomaly RMSE"); ax[1].set_title("b)", loc="left", fontweight="bold")
+    ax[1].set_xlabel("Source / field anomaly RMSE"); ax[1].set_title("b) Equal-budget ratios (lower = source better)")
     for a in ax: a.grid(alpha=0.25, lw=0.5, axis="x" if a is ax[1] else "both")
     fig.tight_layout(); _save(fig, "fig3_representation")
     # Figure 4
-    fig, ax = plt.subplots(figsize=(4.5, 3.4))
+    fig, ax = plt.subplots(figsize=(5.2, 3.4))
     from matplotlib.patches import Rectangle
     ax.add_patch(Rectangle((0.0, 0.005), 0.2, 0.995, facecolor="#009E73", alpha=0.10, zorder=0))
-    ax.text(0.012, 0.05, "H4 criterion region:\nerror < 1% and cost < 0.20", fontsize=6.5, color="#00674b")
+    ax.text(0.012, 0.05, "H4 criterion region:\nerror < 1% and cost < 0.20", fontsize=7, color="#00674b")
     for mon, mk in [("1998-06", "o"), ("1988-07", "s"), ("1994-06", "^")]:
         d = e4df[e4df.month == mon]
         ax.plot(d.cost_ratio, d.mean_rel_err_pct, marker=mk, color="#0072B2", label=f"month {mon}")
@@ -444,6 +445,7 @@ def make_figures(e1df, e2df, e4df):
     ax.axhline(1.0, color="#CC79A7", ls="--", lw=1)
     ax.set_yscale("log"); ax.set_ylim(0.005, 30); ax.set_xlim(0, 0.45)
     ax.set_xlabel("Kernel evaluations / exact summation"); ax.set_ylabel("Mean |relative error| (%)")
+    ax.set_title("Barnes–Hut trade-off: no θ enters the criterion region")
     ax.legend(frameon=False); ax.grid(alpha=0.25, lw=0.5)
     fig.tight_layout(); _save(fig, "fig4_barnes_hut")
     # Figure 5: case-month maps in EPSG:5070
@@ -457,7 +459,7 @@ def make_figures(e1df, e2df, e4df):
              ("1998-06", "TX", "Texas driest month"), ("1998-02", "FL", "Florida wettest month")]
     from matplotlib.colors import TwoSlopeNorm
     norm = TwoSlopeNorm(vmin=-40, vcenter=0, vmax=40)
-    fig, axes = plt.subplots(2, 2, figsize=(4.5, 4.4), gridspec_kw=dict(wspace=0.02, hspace=0.12))
+    fig, axes = plt.subplots(2, 2, figsize=(7.4, 5.9))
     bx0, by0, bx1, by1 = bnd.total_bounds
     pad = 8e4
     sm = None
@@ -467,21 +469,24 @@ def make_figures(e1df, e2df, e4df):
         bnd.plot(ax=ax, facecolor="none", edgecolor="#8a8a8a", linewidth=0.5)
         ms = state == st
         instate = float(D[t, ms] @ (M[ms] / M[ms].sum())); agg = float(D[t] @ Mw)
-        ax.set_title(f"{label}, {mon}\nin-state {instate:.1f}%, domain {agg:.1f}%", fontsize=6.5)
+        ax.set_title(f"{label} — {mon}\nin-state {instate:.1f}%, domain {agg:.1f}%", fontsize=9)
         ax.set_axis_off(); ax.set_xlim(bx0 - pad, bx1 + pad); ax.set_ylim(by0 - pad, by1 + pad)
     # scale bar and north arrow on the first panel (projected metres)
     ax0 = axes[0, 0]; x0, y0 = bx0 + 1e4, by0 + 1.2e5; L = 1e6
     from matplotlib.patches import Rectangle as _Rect
-    ax0.add_patch(_Rect((x0, y0), L/2, 2.0e4, facecolor="white", edgecolor="black", lw=0.7))
-    ax0.add_patch(_Rect((x0 + L/2, y0), L/2, 2.0e4, facecolor="black", edgecolor="black", lw=0.7))
-    ax0.text(x0, y0 - 1.0e5, "0", fontsize=6, ha="center", va="top"); ax0.text(x0 + L, y0 - 1.0e5, "1000 km", fontsize=6, ha="center", va="top")
-    ax0.annotate("", xy=(0.93, 0.95), xytext=(0.93, 0.75), xycoords="axes fraction",
-                 arrowprops=dict(arrowstyle="-|>", lw=1.0, color="black"))
-    ax0.text(0.93, 0.96, "N", transform=ax0.transAxes, ha="center", va="bottom", fontsize=7, fontweight="bold")
+    ax0.add_patch(_Rect((x0, y0), L/2, 3.2e4, facecolor="white", edgecolor="black", lw=0.9))
+    ax0.add_patch(_Rect((x0 + L/2, y0), L/2, 3.2e4, facecolor="black", edgecolor="black", lw=0.9))
+    ax0.text(x0, y0 - 1.1e5, "0", fontsize=7.5, ha="center"); ax0.text(x0 + L, y0 - 1.1e5, "1000 km", fontsize=7.5, ha="center")
+    ax0.annotate("N", xy=(0.96, 0.92), xytext=(0.96, 0.78), xycoords="axes fraction",
+                 ha="center", fontsize=10, fontweight="bold",
+                 arrowprops=dict(arrowstyle="->", lw=1.2))
     import matplotlib as mpl
     smap = mpl.cm.ScalarMappable(norm=norm, cmap="RdBu_r"); smap.set_array([])
-    cb = fig.colorbar(smap, ax=axes, shrink=0.6, orientation="horizontal", pad=0.02, fraction=0.035, aspect=35)
-    cb.set_label("Access deviation from climatology (%)", fontsize=7); cb.ax.tick_params(labelsize=6.5)
+    cb = fig.colorbar(smap, ax=axes, shrink=0.75, orientation="horizontal", pad=0.04, fraction=0.05)
+    cb.set_label("Access deviation from climatology (%)")
+    fig.suptitle("Climatology-relative access deviations in extreme case months (native 0.5° cells)", fontsize=10.5)
+    fig.text(0.01, -0.01, "Source: SPEIbase v2.10 SPEI-3 (1980–2023); 2023 ACS tract populations aggregated to native 0.5° cells "
+                          "(white = no occupied tract cell). Projection: Albers Equal Area (EPSG:5070). Mechanism α = β = 0.5, d₀ = 100 km.", fontsize=6.5, color="#444444")
     _save(fig, "fig5_case_anomaly_maps")
 
 def main():
